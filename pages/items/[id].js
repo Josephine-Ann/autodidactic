@@ -1,10 +1,16 @@
+import { useRouter } from 'next/router';
 import React from 'react';
+import Layout from '../../Components/layout';
+import EventDelegationList from '../../Components/EventDelegationList';
 
-const Item = () => {
+const Item = (props) => {
+    const last = (useRouter().asPath).length-1
+    const id = useRouter().asPath[last]
+    console.log(props)
     return (
-        <div>
-            <p>You are on the item page</p>
-        </div>
+        <Layout>
+            <p>Hi, id page</p>
+        </Layout>
     );
 };
 

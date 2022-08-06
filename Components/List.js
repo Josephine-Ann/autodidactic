@@ -1,12 +1,14 @@
 import React from 'react';
 import ListItem from './ListItem';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux'
+import {getUsers} from '../store/actions/usersAction'
 
 const List = () => {
     const subjects = [
         {
-        name: `The 'this' Keyword`,
-        id: 1
+          name: `Event Delegation`,
+          id: 1
         }, 
         {
           name: `JS Prototypal Inheritance`,
@@ -21,17 +23,23 @@ const List = () => {
           id: 4
         }, 
     ]
-    const bubble = e => setOrigin(e.target.innerHTML)
-  const [origin, setOrigin] = useState('')
+    const dispatch = useDispatch()
+    const usersList = useSelector(state => state.usersList)
+    const {loading, error, users} = usersList
+    useEffect(() => {
+        dispatch(getUsers()) 
+      }, [dispatch])
     return (
       <>
-      <h1 className={origin ? "block" : "hidden"}>You clicked on "{origin}", and it bubbled up to its parent!</h1>
-              <ul onClick={e => {bubble(e)}} id="list-to-bubble">
+      <ul>
             {
                 subjects.map(sub => {
-                   return <ListItem {...sub} key={sub.id}/>
+                   return <ListItem {...sub}/>
                 })
             }
+        </ul>
+        <ul>
+        {loading ? "Loading..." : error ? error.message : users.map(u => <li>{u.name}</li>)}
         </ul>
       </>
 
